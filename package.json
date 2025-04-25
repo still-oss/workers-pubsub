@@ -1,29 +1,31 @@
 {
-  "name": "@sagi.io/workers-pubsub",
+  "name": "workers-pubsub",
   "version": "0.0.15",
   "description": "Google Pub/Sub API for Cloudflare Workers",
-  "author": "Sagi Kedmi <git@sagi.io> (https://sagi.io)",
-  "homepage": "https://sagi.io",
-  "main": "lib/index.js",
-  "types": "index.d.ts",
+  "contributors": ["Alec Larson", "Sagi Kedmi"],
   "license": "MIT",
-  "private": false,
-  "scripts": {
-    "test": "yarn jest"
+  "files": ["dist"],
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
   },
-  "dependencies": {
-    "js-base64": "^3.7.2"
+  "scripts": {
+    "dev": "tsup --watch --sourcemap --clean",
+    "build": "tsup --clean",
+    "test": "vitest"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "@cloudflare/workers-types": "^4.20250425.0",
     "@radashi-org/biome-config": "^1.0.2",
+    "@types/node": "^22.15.2",
     "cross-fetch": "^3.1.5",
-    "jest": "^27.5.1",
-    "node-webcrypto-ossl": "^2.1.3"
+    "radashi": "^12.4.0",
+    "tsup": "^8.4.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sagi/workers-pubsub.git"
+    "url": "https://github.com/still-oss/workers-pubsub.git"
   },
   "keywords": [
     "cloudflare",

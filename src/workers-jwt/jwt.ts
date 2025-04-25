@@ -23,7 +23,6 @@ export const getToken = async ({
   privateKeyPEM,
   payload,
   alg = 'RS256',
-  cryptoImpl = null,
   headerAdditions = {},
 }) => {
   const algorithm = algorithms[alg]
@@ -31,15 +30,8 @@ export const getToken = async ({
     throw new Error(`workers-jwt: Unsupported algorithm ${alg}.`)
   }
 
-  if (!globalThis.crypto) {
-    if (!cryptoImpl) {
-      throw new Error(`workers-jwt: No crypto nor cryptoImpl were found.`)
-    }
-    globalThis.crypto = cryptoImpl
-  }
-
   const privateKeyDER = getDERfromPEM(privateKeyPEM)
-  const privateKey = await globalThis.crypto.subtle.importKey(
+  const privateKey = await crypto.subtle.importKey(
     'pkcs8',
     privateKeyDER,
     algorithm,
@@ -51,7 +43,7 @@ export const getToken = async ({
   const encodedMessage = getEncodedMessage(header, payload)
   const encodedMessageArrBuf = str2ab(encodedMessage)
 
-  const signatureArrBuf = await globalThis.crypto.subtle.sign(
+  const signatureArrBuf = await crypto.subtle.sign(
     algorithm,
     privateKey,
     encodedMessageArrBuf,
@@ -62,7 +54,7 @@ export const getToken = async ({
   return token
 }
 
-// Service Account Authoriazation without OAuth2:
+// Service Account Authorization without OAuth2:
 // https://developers.google.com/identity/protocols/OAuth2ServiceAccount#jwt-auth
 // Service Account Auth for OAuth2 Tokens: Choose "HTTP / REST" for:
 // https://developers.google.com/identity/protocols/OAuth2ServiceAccount
