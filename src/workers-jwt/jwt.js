@@ -1,5 +1,5 @@
-import { getEncodedMessage, getDERfromPEM, str2ab } from './utils';
-import { Base64 } from 'js-base64';
+import { getEncodedMessage, getDERfromPEM, str2ab } from './utils'
+import { Base64 } from 'js-base64'
 
 export const algorithms = {
   RS256: {
@@ -10,13 +10,13 @@ export const algorithms = {
     name: 'ECDSA',
     namedCurve: 'P-256',
   },
-};
+}
 
 export const getHeader = (alg, headerAdditions) => ({
   ...headerAdditions,
   alg,
   typ: 'JWT',
-});
+})
 
 // XXX https://developers.google.com/identity/protocols/OAuth2ServiceAccount#jwt-auth
 export const getToken = async ({
@@ -26,43 +26,41 @@ export const getToken = async ({
   cryptoImpl = null,
   headerAdditions = {},
 }) => {
-  const algorithm = algorithms[alg];
+  const algorithm = algorithms[alg]
   if (!algorithm) {
-    throw new Error(`workers-jwt: Unsupported algorithm ${alg}.`);
+    throw new Error(`workers-jwt: Unsupported algorithm ${alg}.`)
   }
 
   if (!globalThis.crypto) {
     if (!cryptoImpl) {
-      throw new Error(
-        `workers-jwt: No crypto nor cryptoImpl were found.`
-      );
+      throw new Error(`workers-jwt: No crypto nor cryptoImpl were found.`)
     }
-    globalThis.crypto = cryptoImpl;
+    globalThis.crypto = cryptoImpl
   }
 
-  const privateKeyDER = getDERfromPEM(privateKeyPEM);
+  const privateKeyDER = getDERfromPEM(privateKeyPEM)
   const privateKey = await globalThis.crypto.subtle.importKey(
     'pkcs8',
     privateKeyDER,
     algorithm,
     false,
-    ['sign']
-  );
+    ['sign'],
+  )
 
-  const header = getHeader(alg, headerAdditions);
-  const encodedMessage = getEncodedMessage(header, payload);
-  const encodedMessageArrBuf = str2ab(encodedMessage);
+  const header = getHeader(alg, headerAdditions)
+  const encodedMessage = getEncodedMessage(header, payload)
+  const encodedMessageArrBuf = str2ab(encodedMessage)
 
   const signatureArrBuf = await globalThis.crypto.subtle.sign(
     algorithm,
     privateKey,
-    encodedMessageArrBuf
-  );
-  const signatureUint8Array = new Uint8Array(signatureArrBuf);
-  const encodedSignature = Base64.fromUint8Array(signatureUint8Array, true);
-  const token = `${encodedMessage}.${encodedSignature}`;
-  return token;
-};
+    encodedMessageArrBuf,
+  )
+  const signatureUint8Array = new Uint8Array(signatureArrBuf)
+  const encodedSignature = Base64.fromUint8Array(signatureUint8Array, true)
+  const token = `${encodedMessage}.${encodedSignature}`
+  return token
+}
 
 // Service Account Authoriazation without OAuth2:
 // https://developers.google.com/identity/protocols/OAuth2ServiceAccount#jwt-auth
@@ -81,15 +79,15 @@ export const getTokenFromGCPServiceAccount = async ({
     client_email: clientEmail,
     private_key_id: privateKeyId,
     private_key: privateKeyPEM,
-  } = serviceAccountJSON;
+  } = serviceAccountJSON
 
-  Object.assign(headerAdditions, { kid: privateKeyId });
+  Object.assign(headerAdditions, { kid: privateKeyId })
 
-  const iat = parseInt(Date.now() / 1000);
-  const exp = iat + expiredAfter;
-  const iss = clientEmail;
-  const sub = clientEmail;
-  const payload = { aud, iss, sub, iat, exp, ...payloadAdditions };
+  const iat = Number.parseInt(Date.now() / 1000)
+  const exp = iat + expiredAfter
+  const iss = clientEmail
+  const sub = clientEmail
+  const payload = { aud, iss, sub, iat, exp, ...payloadAdditions }
 
-  return getToken({ privateKeyPEM, payload, alg, headerAdditions, cryptoImpl });
-};
+  return getToken({ privateKeyPEM, payload, alg, headerAdditions, cryptoImpl })
+}

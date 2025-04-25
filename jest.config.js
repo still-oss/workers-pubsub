@@ -7,4 +7,4 @@ module.exports = {
       lines: 100,
     },
   },
-};
+}

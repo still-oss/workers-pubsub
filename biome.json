@@ -1,0 +1,43 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "extends": ["@radashi-org/biome-config"],
+  "files": {
+    "include": ["**/*.js", "**/*.d.ts", "**/*.json"]
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always"
+    }
+  },
+  "linter": {
+    "rules": {
+      "style": {
+        "noUnusedTemplateLiteral": "off",
+        "useConst": "off",
+        "useImportType": "warn",
+        "useSelfClosingElements": "off"
+      },
+      "correctness": {
+        "noChildrenProp": "off",
+        "noConstructorReturn": "off",
+        "useExhaustiveDependencies": "off",
+        "useHookAtTopLevel": "off",
+        "useImportExtensions": "off"
+      },
+      "complexity": {
+        "useArrowFunction": "off",
+        "noBannedTypes": "off",
+        "useRegexLiterals": "off",
+        "useOptionalChain": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noConstEnum": "off",
+        "noExplicitAny": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      }
+    }
+  }
+}
