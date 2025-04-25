@@ -28,9 +28,8 @@ export const setGlobals = (fetchImpl = null) => {
   if (!globalThis.fetch) {
     if (!fetchImpl) {
       throw new Error(`${ERR_PREFIX}: No fetch nor fetchImpl were found.`)
-    } else {
-      globalThis.fetch = fetchImpl
     }
+    globalThis.fetch = fetchImpl
   }
 }
 

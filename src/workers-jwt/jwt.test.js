@@ -1,11 +1,11 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import * as jwt from './jwt'
 import * as utils from './utils'
 import '@sagi.io/globalthis'
 import { Base64 } from 'js-base64'
 
 describe('workers-jwt', () => {
-  const cryptoImpl = require('crypto').webcrypto
+  const cryptoImpl = require('node:crypto').webcrypto
   global.Date.now = jest.fn(() => 1530518207007)
 
   beforeEach(() => {
