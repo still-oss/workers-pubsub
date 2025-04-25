@@ -1,5 +1,4 @@
 import * as topics from './topics';
-import '@sagi.io/globalthis';
 
 describe('topics', () => {
   const projectId = 'CAFEBABE';

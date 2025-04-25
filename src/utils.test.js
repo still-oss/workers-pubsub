@@ -1,4 +1,3 @@
-import '@sagi.io/globalthis';
 import * as utils from './utils';
 
 describe('utils', () => {
