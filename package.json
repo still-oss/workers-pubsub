@@ -12,7 +12,6 @@
     "test": "yarn jest"
   },
   "dependencies": {
-    "@sagi.io/workers-jwt": "^0.0.21",
     "js-base64": "^3.7.2"
   },
   "devDependencies": {

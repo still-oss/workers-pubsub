@@ -1,5 +1,5 @@
 import * as topicsOps from './topics';
-import { getTokenFromGCPServiceAccount } from '@sagi.io/workers-jwt';
+import { getTokenFromGCPServiceAccount } from './workers-jwt';
 import { createPubSubMessage, setGlobals, injectBaseInputs } from './utils';
 
 const PubSubREST = async ({
